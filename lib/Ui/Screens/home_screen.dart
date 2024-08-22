@@ -53,9 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showThemeBottomSheet(context, const AddTasks());
-        },
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          useSafeArea: true,
+          isScrollControlled: true,
+          builder: (buildContext) => const AddTasks(),
+        ),
         child: const Icon(
           Icons.add,
         ),
@@ -64,15 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
         index: currentIndex,
         children: tabs,
       ),
-    );
-  }
-
-  void showThemeBottomSheet(BuildContext context, Widget child) {
-    showModalBottomSheet(
-      useRootNavigator: true,
-      context: context,
-      // isScrollControlled:true,
-      builder: (buildContext) => child,
     );
   }
 }

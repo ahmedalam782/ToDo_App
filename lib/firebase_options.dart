@@ -63,6 +63,11 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1056726774969',
     projectId: 'todo-app-route-3c50f',
     storageBucket: 'todo-app-route-3c50f.appspot.com',
+    androidClientId:
+        '1056726774969-92u53um8oolkgi7a2h1vnvtpb9jv3cfe.apps.googleusercontent.com',
+    iosClientId:
+        '1056726774969-guvpd1vp7363vdnnjpujo4j7gf5b59ud.apps.googleusercontent.com',
     iosBundleId: 'com.example.todoAppRoute',
   );
+
 }

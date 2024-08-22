@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../Shared/network/local/cache_helper.dart';
 
 class SettingProvider extends ChangeNotifier {
-  ThemeMode themeMode = CacheHelper.getData(key: 'isDark') == null
-      ? ThemeMode.light
-      : CacheHelper.getData(key: 'isDark')
-          ? ThemeMode.dark
-          : ThemeMode.light;
+  ThemeMode themeMode = ThemeMode.light;
 
-  String lang = CacheHelper.getData(key: 'isLanguage') ?? "en";
+  String lang = "en";
 
   String get mode => themeMode == ThemeMode.dark ? "dark" : "light";
 
@@ -18,15 +14,27 @@ class SettingProvider extends ChangeNotifier {
   String get splashImage =>
       "assets/images/${isDark ? 'bg_splash_dark' : 'bg_splash'}.png";
 
-  void changeThemeMode(ThemeMode selectedThemeMode) {
+  Future<void> changeThemeMode(ThemeMode selectedThemeMode) async {
     themeMode = selectedThemeMode;
-    CacheHelper.saveData(key: 'isDark', value: isDark);
+    await CacheHelper.saveData(key: 'isDark', value: isDark);
     notifyListeners();
   }
 
-  void changeLanguage(String selectedLanguage) {
+  Future<void> changeLanguage(String selectedLanguage) async {
     lang = selectedLanguage;
-    CacheHelper.saveData(key: 'isLanguage', value: lang);
+    await CacheHelper.saveData(key: 'isLanguage', value: lang);
     notifyListeners();
+  }
+
+  Future<void> getThemeMode() async {
+    themeMode = await CacheHelper.getData(key: 'isDark') == null
+        ? ThemeMode.light
+        : CacheHelper.getData(key: 'isDark')
+            ? ThemeMode.dark
+            : ThemeMode.light;
+  }
+
+  Future<void> getLang() async {
+    lang = await CacheHelper.getData(key: 'isLanguage') ?? "en";
   }
 }

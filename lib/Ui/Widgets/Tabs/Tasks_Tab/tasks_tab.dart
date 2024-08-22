@@ -6,9 +6,42 @@ import 'package:todo_app_route/Ui/Widgets/Tabs/Tasks_Tab/widgets/custom_show_dat
 import 'package:todo_app_route/Ui/Widgets/Tabs/Tasks_Tab/widgets/task_design.dart';
 
 import '../../../../Shared/Components/default_appbar.dart';
+import '../../../Screens/authentication_provider.dart';
 
-class TasksTab extends StatelessWidget {
+class TasksTab extends StatefulWidget {
   const TasksTab({super.key});
+
+  @override
+  State<TasksTab> createState() => _TasksTabState();
+}
+
+class _TasksTabState extends State<TasksTab> {
+  bool shouldGetTasks = true;
+
+/*  final ScrollController _scrollController = ScrollController();
+  bool _showDate = true;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 100) {
+        setState(() {
+          _showDate = false;
+        });
+      } else {
+        setState(() {
+          _showDate = true;
+        });
+      }
+    });
+  }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+ */
 
 /*  final ScrollController _scrollController = ScrollController();
   bool _showDate = true;
@@ -37,6 +70,13 @@ class TasksTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
+    if (shouldGetTasks) {
+      final uid = Provider.of<AuthenticationProvider>(context, listen: false)
+          .currentUser!
+          .id;
+      tasksProvider.getTasks(uid);
+      shouldGetTasks = false;
+    }
     return Column(
       children: [
         Stack(

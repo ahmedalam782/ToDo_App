@@ -4,6 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_route/Ui/Widgets/Tabs/Tasks_Tab/tasks_provider.dart';
 
+import '../../../../Screens/authentication_provider.dart';
+
 class CustomShowDate extends StatelessWidget {
   const CustomShowDate({super.key});
 
@@ -71,7 +73,12 @@ class CustomShowDate extends StatelessWidget {
       focusDate: tasksProvider.selectedDate,
       lastDate: DateTime.now().add(const Duration(days: 30)),
       onDateChange: (date) {
-        tasksProvider.changeSelectDate(date);
+        tasksProvider.changeSelectDate(
+          date,
+          Provider.of<AuthenticationProvider>(context, listen: false)
+              .currentUser!
+              .id,
+        );
       },
     );
   }

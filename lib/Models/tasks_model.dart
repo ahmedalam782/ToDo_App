@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TaskModel {
   String id;
   String title;
+
   String description;
+
   DateTime date;
   bool isDone;
 

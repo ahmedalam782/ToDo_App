@@ -30,11 +30,9 @@ class AppTheme {
     scaffoldBackgroundColor: lightPrimary,
     appBarTheme: AppBarTheme(
       centerTitle: false,
-      backgroundColor: blue,
-      // elevation: 0,
-      iconTheme: const IconThemeData(
-        color: white,
-      ),
+      backgroundColor: lightPrimary,
+      elevation: 0,
+      foregroundColor: black,
       titleTextStyle: GoogleFonts.poppins(
         fontSize: 22,
         fontWeight: FontWeight.w700,
@@ -112,11 +110,9 @@ class AppTheme {
     scaffoldBackgroundColor: darkPrimary,
     appBarTheme: AppBarTheme(
       centerTitle: false,
-      backgroundColor: blue,
+      backgroundColor: darkPrimary,
       elevation: 0,
-      iconTheme: const IconThemeData(
-        color: black,
-      ),
+      foregroundColor: white,
       titleTextStyle: GoogleFonts.poppins(
         fontSize: 22,
         fontWeight: FontWeight.w700,

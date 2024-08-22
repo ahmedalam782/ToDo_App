@@ -6,6 +6,8 @@ import 'package:todo_app_route/Shared/Themes/app_theme.dart';
 import 'package:todo_app_route/Ui/Widgets/Tabs/Tasks_Tab/Edit%20Tasks/edit_task.dart';
 import 'package:todo_app_route/Ui/Widgets/Tabs/Tasks_Tab/tasks_provider.dart';
 
+import '../../../../Screens/authentication_provider.dart';
+
 class TaskDesign extends StatefulWidget {
   const TaskDesign({super.key, required this.taskModel});
 
@@ -25,12 +27,16 @@ class _TaskDesignState extends State<TaskDesign> {
       ),
       child: Slidable(
         startActionPane: ActionPane(
-          motion: const BehindMotion(),
+          motion: const ScrollMotion(),
           children: [
             SlidableAction(
-              spacing: 10,
               onPressed: (_) {
-                tasksProvider.deleteTask(widget.taskModel.id);
+                tasksProvider.deleteTask(
+                  widget.taskModel.id,
+                  Provider.of<AuthenticationProvider>(context, listen: false)
+                      .currentUser!
+                      .id,
+                );
               },
               backgroundColor: AppTheme.red,
               foregroundColor: AppTheme.white,
@@ -39,7 +45,6 @@ class _TaskDesignState extends State<TaskDesign> {
               borderRadius: BorderRadius.circular(15),
             ),
             SlidableAction(
-              spacing: 10,
               borderRadius: BorderRadius.circular(15),
               onPressed: (_) {
                 Navigator.pushNamed(context, EditTask.routeName,
@@ -109,7 +114,13 @@ class _TaskDesignState extends State<TaskDesign> {
                     onTap: () {
                       widget.taskModel.isDone = !widget.taskModel.isDone;
                       setState(() {});
-                      tasksProvider.updateTaskToDone(widget.taskModel);
+                      tasksProvider.updateTaskToDone(
+                        widget.taskModel,
+                        Provider.of<AuthenticationProvider>(context,
+                                listen: false)
+                            .currentUser!
+                            .id,
+                      );
                     },
                     child: widget.taskModel.isDone
                         ? Text(

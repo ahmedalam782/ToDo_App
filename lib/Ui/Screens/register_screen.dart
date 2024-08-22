@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app_route/Models/auth_exception.dart';
+import 'package:todo_app_route/Ui/Screens/verified_email_screen.dart';
 
-import '../../Shared/Components/component_login_register_with_google_facebook.dart';
+import '../../Core/Firebase/firebase_auth_function.dart';
 import '../../Shared/Components/default_btn.dart';
 import '../../Shared/Components/text_form_field_component.dart';
+import '../../Shared/Themes/app_theme.dart';
 import '../../Shared/validated_login_function.dart';
+import 'authentication_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = "RegisterScreen";
@@ -16,13 +22,23 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  bool isShow = false;
+  bool isShow = true;
   TextEditingController nameTextEditingController = TextEditingController();
 
   TextEditingController emailTextEditingController = TextEditingController();
 
   TextEditingController passwordTextEditingController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    nameTextEditingController.dispose();
+    emailTextEditingController.dispose();
+    passwordTextEditingController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +46,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          AppLocalizations.of(context)!.createAccountBtn,
-        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * .03),
+            child: Image.asset(
+              "assets/images/splash.png",
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -43,14 +63,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: formKey,
           child: ListView(
             children: [
-              Center(
-                child: Image.asset(
-                  "assets/images/splash.png",
-                  height: height * .25,
-                ),
+              Text(
+                AppLocalizations.of(context)!.createAccountBtn,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontSize: 24,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
               ),
               SizedBox(
                 height: height * .038,
+              ),
+              Text(
+                AppLocalizations.of(context)!.introductoryLetterRegister,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
               ),
               CustomTextFormField(
                 controller: nameTextEditingController,
@@ -68,8 +97,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CustomTextFormField(
                 controller: emailTextEditingController,
                 labelText: AppLocalizations.of(context)!.email,
-                validator: (value) =>
-                    ValidatedLoginFunction.validateEmail(value, context),
+                validator: (value) => ValidatedLoginFunction.validateEmail(
+                    value, AppLocalizations.of(context)!.emailError),
               ),
               SizedBox(
                 height: height * .038,
@@ -77,8 +106,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CustomTextFormField(
                 controller: passwordTextEditingController,
                 labelText: AppLocalizations.of(context)!.password,
-                validator: (value) =>
-                    ValidatedLoginFunction.validatePassword(value, context),
+                validator: (value) => ValidatedLoginFunction.validatePassword(
+                    value, AppLocalizations.of(context)!.passwordError),
                 obscureText: isShow,
                 suffixIcon: isShow ? Icons.visibility_off : Icons.visibility,
                 suffixIconOnPressed: () {
@@ -87,36 +116,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               SizedBox(
-                height: height * .06,
+                height: height * .08,
               ),
-              DefaultBtn(
-                title: AppLocalizations.of(context)!.createAccountBtn,
-                isShow: true,
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {}
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.loginTxt,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          fontSize: 14,
+                        ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.login,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontSize: 18,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
-                height: height * .04,
+                height: height * .03,
               ),
-              BottomDesignLoginRegister(
-                textDivider: AppLocalizations.of(context)!.createAccountTxt,
-              ),
-              SizedBox(
-                height: height * .02,
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.loginToAccount,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontSize: 16,
-                        color: Theme.of(context).primaryColorLight,
-                      ),
-                ),
-              ),
+              isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : DefaultBtn(
+                      title: AppLocalizations.of(context)!.createAccountBtn,
+                      isShow: true,
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          signUp();
+                        }
+                      },
+                    ),
               SizedBox(
                 height: height * .03,
               ),
@@ -125,5 +163,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> signUp() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      await FirebaseAuthFunction.createUserWithEmailAndPassword(
+        name: nameTextEditingController.text,
+        email: emailTextEditingController.text,
+        password: passwordTextEditingController.text,
+      ).then((user) {
+        if (!mounted) return;
+        Provider.of<AuthenticationProvider>(context, listen: false)
+            .updateUser(user);
+        Navigator.pushReplacementNamed(
+          context,
+          VerifiedEmailScreen.routeName,
+          arguments: emailTextEditingController.text,
+        );
+      });
+    } on ServerException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(
+        msg: e.errorModel.errorMsg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: AppTheme.white,
+        textColor: AppTheme.red,
+        fontSize: 18.0,
+      );
+    }
   }
 }

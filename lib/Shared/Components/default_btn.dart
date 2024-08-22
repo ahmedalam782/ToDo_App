@@ -19,9 +19,11 @@ class DefaultBtn extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
-        fixedSize: Size(
-          double.infinity,
-          MediaQuery.sizeOf(context).height * .072,
+        maximumSize: Size.fromHeight(
+          MediaQuery.sizeOf(context).height * .07,
+        ),
+        minimumSize: Size.fromHeight(
+          MediaQuery.sizeOf(context).height * .07,
         ),
       ),
       onPressed: onPressed,

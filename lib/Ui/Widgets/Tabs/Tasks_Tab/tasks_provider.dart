@@ -9,21 +9,18 @@ class TasksProvider with ChangeNotifier {
   List<TaskModel> tasks = [];
   DateTime selectedDate = DateTime.now();
 
-  Future<void> addTasks(TaskModel task, String msg) async {
-    await FirebaseCloudFunction.addTaskToFirebase(task).timeout(
-      const Duration(microseconds: 500),
-      onTimeout: () {
-        Fluttertoast.showToast(
-          msg: msg,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: AppTheme.lightPrimary,
-          textColor: AppTheme.black,
-          fontSize: 22.0,
-        );
-      },
-    ).catchError(
+  Future<void> addTasks(TaskModel task, String msg, String uid) async {
+    await FirebaseCloudFunction.addTaskToFirebase(task, uid).then((onValue) {
+      Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: AppTheme.lightPrimary,
+        textColor: AppTheme.black,
+        fontSize: 22.0,
+      );
+    }).catchError(
       (onError) {
         Fluttertoast.showToast(
           msg: onError.toString(),
@@ -36,12 +33,13 @@ class TasksProvider with ChangeNotifier {
         );
       },
     );
-    getTasks();
+    getTasks(uid);
     notifyListeners();
   }
 
-  Future<void> getTasks() async {
-    List<TaskModel> allTask = await FirebaseCloudFunction.getTaskFromFirebase();
+  Future<void> getTasks(String uid) async {
+    List<TaskModel> allTask =
+        await FirebaseCloudFunction.getTaskFromFirebase(uid);
     tasks = allTask
         .where((task) =>
             task.date.day == selectedDate.day &&
@@ -51,26 +49,21 @@ class TasksProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeSelectDate(DateTime date) {
+  void changeSelectDate(DateTime date, String uid) {
     selectedDate = date;
-    getTasks();
+    getTasks(uid);
     notifyListeners();
   }
 
-  updateTaskToDone(TaskModel task) async {
-    await FirebaseCloudFunction.updateTaskInFirebase(
-      task,
-    );
-    getTasks();
+  updateTaskToDone(TaskModel task, String uid) async {
+    await FirebaseCloudFunction.updateTaskInFirebase(task, uid);
+    getTasks(uid);
     notifyListeners();
   }
 
-  updateTask(TaskModel task, String msg) async {
-    await FirebaseCloudFunction.updateTaskInFirebase(
-      task,
-    ).timeout(
-      const Duration(microseconds: 500),
-      onTimeout: () {
+  updateTask(TaskModel task, String msg, String uid) async {
+    await FirebaseCloudFunction.updateTaskInFirebase(task, uid).then(
+      (onValue) {
         Fluttertoast.showToast(
           msg: msg,
           toastLength: Toast.LENGTH_LONG,
@@ -94,15 +87,13 @@ class TasksProvider with ChangeNotifier {
         );
       },
     );
-    getTasks();
+    getTasks(uid);
     notifyListeners();
   }
 
-  deleteTask(String id) async {
-    await FirebaseCloudFunction.deleteTaskFromFirebase(
-      id,
-    );
-    getTasks();
+  deleteTask(String id, String uid) async {
+    await FirebaseCloudFunction.deleteTaskFromFirebase(id, uid);
+    getTasks(uid);
     notifyListeners();
   }
 }
