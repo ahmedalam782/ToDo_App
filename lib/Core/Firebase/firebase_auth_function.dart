@@ -136,12 +136,13 @@ class FirebaseAuthFunction {
   static Future signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      if (googleUser == null) return;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
 
       final userCredential =
@@ -150,7 +151,7 @@ class FirebaseAuthFunction {
       if (getUser == null) {
         final user = AuthModel(
             id: userCredential.user!.uid,
-            name: googleUser!.displayName.toString(),
+            name: googleUser.displayName.toString(),
             email: googleUser.email.toString());
         await addUserToFirebase(
           user,

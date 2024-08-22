@@ -40,6 +40,12 @@ Future<void> main() async {
   } else {
     user = null;
   }
+  ThemeMode theme = await CacheHelper.getData(key: 'isDark') == null
+      ? ThemeMode.light
+      : CacheHelper.getData(key: 'isDark')
+          ? ThemeMode.dark
+          : ThemeMode.light;
+  String lang = await CacheHelper.getData(key: 'isLanguage') ?? "en";
   runApp(
     MultiProvider(
       providers: [
@@ -48,8 +54,8 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => SettingProvider()
-            ..getThemeMode()
-            ..getLang(),
+            ..changeLanguage(lang)
+            ..changeThemeMode(theme),
         ),
         ChangeNotifierProvider(
           create: (_) => TasksProvider(),

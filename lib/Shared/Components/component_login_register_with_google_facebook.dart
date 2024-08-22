@@ -64,6 +64,7 @@ class _BottomDesignLoginRegisterState extends State<BottomDesignLoginRegister> {
   Future<void> signInWithGoogle() async {
     try {
       FirebaseAuthFunction.signInWithGoogle().then((user) async {
+        if (user == null) return;
         if (!mounted) return;
         Provider.of<AuthenticationProvider>(context, listen: false)
             .updateUser(user);
