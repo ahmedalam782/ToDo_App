@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_route/Core/Firebase/firebase_auth_function.dart';
+import 'package:todo_app_route/Models/auth_model.dart';
 import 'package:todo_app_route/Shared/Themes/app_theme.dart';
 import 'package:todo_app_route/Shared/network/local/cache_helper.dart';
 import 'package:todo_app_route/Ui/Screens/authentication_provider.dart';
@@ -34,7 +35,7 @@ Future<void> main() async {
         key: "userId",
       ) ??
       "";
-  final user;
+  final AuthModel? user;
   if (id != "") {
     user = await FirebaseAuthFunction.getUserFromFirebase(id);
   } else {
