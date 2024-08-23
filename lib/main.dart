@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_route/Core/Firebase/firebase_auth_function.dart';
+import 'package:todo_app_route/Core/Firebase/firebase_messaging_function.dart';
 import 'package:todo_app_route/Models/auth_model.dart';
 import 'package:todo_app_route/Shared/Themes/app_theme.dart';
 import 'package:todo_app_route/Shared/network/local/cache_helper.dart';
@@ -25,10 +26,12 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  await CacheHelper.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await CacheHelper.init();
+  await FirebaseMessagingFunction.init();
+
   FirebaseFirestore.instance.settings =
       const Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   final id = await CacheHelper.getData(

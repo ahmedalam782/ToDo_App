@@ -79,7 +79,7 @@ class FirebaseAuthFunction {
       await signOut();
       return user;
     } on FirebaseAuthException catch (e) {
-      return ServerException.handleDioException(e);
+      return ServerException.handleFirebaseException(e);
     }
   }
 
@@ -88,7 +88,7 @@ class FirebaseAuthFunction {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
     } on FirebaseAuthException catch (e) {
-      return ServerException.handleDioException(e);
+      return ServerException.handleFirebaseException(e);
     }
   }
 
@@ -100,7 +100,7 @@ class FirebaseAuthFunction {
       }
       return user.emailVerified;
     } on FirebaseAuthException catch (e) {
-      return ServerException.handleDioException(e);
+      return ServerException.handleFirebaseException(e);
     }
   }
 
@@ -119,7 +119,7 @@ class FirebaseAuthFunction {
       await CacheHelper.saveData(key: "userId", value: credential.user!.uid);
       return user;
     } on FirebaseAuthException catch (e) {
-      return ServerException.handleDioException(e);
+      return ServerException.handleFirebaseException(e);
     }
   }
 
@@ -129,7 +129,7 @@ class FirebaseAuthFunction {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      return ServerException.handleDioException(e);
+      return ServerException.handleFirebaseException(e);
     }
   }
 
@@ -161,7 +161,7 @@ class FirebaseAuthFunction {
           key: "userId", value: userCredential.user!.uid);
       return getUser;
     } on FirebaseAuthException catch (e) {
-      return ServerException.handleDioException(e);
+      return ServerException.handleFirebaseException(e);
     }
   }
 }

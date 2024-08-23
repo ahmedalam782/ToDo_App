@@ -6,7 +6,7 @@ class ServerException implements Exception {
 
   ServerException({required this.errorModel});
 
-  static void handleDioException(FirebaseAuthException e) {
+  static void handleFirebaseException(FirebaseAuthException e) {
     throw ServerException(
         errorModel: AuthErrorModel.fromFireAuthException(e.code.toString()));
   }
