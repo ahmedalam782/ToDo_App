@@ -25,16 +25,4 @@ class SettingProvider extends ChangeNotifier {
     await CacheHelper.saveData(key: 'isLanguage', value: lang);
     notifyListeners();
   }
-
-  Future<void> getThemeMode() async {
-    themeMode = await CacheHelper.getData(key: 'isDark') == null
-        ? ThemeMode.light
-        : CacheHelper.getData(key: 'isDark')
-            ? ThemeMode.dark
-            : ThemeMode.light;
-  }
-
-  Future<void> getLang() async {
-    lang = await CacheHelper.getData(key: 'isLanguage') ?? "en";
-  }
 }
