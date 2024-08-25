@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app_route/Shared/Themes/app_theme.dart';
+import 'package:todo_app_route/Ui/Widgets/Tabs/Settings_Tab/setting_provider.dart';
 
 class DefaultAppbar extends StatelessWidget {
   const DefaultAppbar({super.key, required this.title, this.isShow = false});
@@ -9,6 +11,7 @@ class DefaultAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingProvider settingProvider = Provider.of<SettingProvider>(context);
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: MediaQuery.of(context).size.height * .09,
@@ -20,8 +23,13 @@ class DefaultAppbar extends StatelessWidget {
         children: [
           isShow
               ? Padding(
-                  padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * .07,
+                  padding: EdgeInsetsDirectional.only(
+                    end: settingProvider.lang == 'en'
+                        ? MediaQuery.of(context).size.width * .04
+                        : 0,
+                    start: settingProvider.lang == 'ar'
+                        ? MediaQuery.of(context).size.width * .06
+                        : 0,
                   ),
                   child: BackButton(
                     onPressed: () {
