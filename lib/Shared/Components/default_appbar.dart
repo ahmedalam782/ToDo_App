@@ -19,12 +19,14 @@ class DefaultAppbar extends StatelessWidget {
       child: Row(
         children: [
           isShow
-              ? IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
+              ? Padding(
+                  padding: EdgeInsetsDirectional.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * .07,
+                  ),
+                  child: BackButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     color: Theme.of(context).secondaryHeaderColor,
                   ),
                 )
