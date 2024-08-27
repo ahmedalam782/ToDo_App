@@ -13,7 +13,7 @@ class FirebaseAuthFunction {
       FirebaseFirestore.instance.collection("Users").withConverter<AuthModel>(
             fromFirestore: (dcSnapshot, option) =>
                 AuthModel.fromJson(dcSnapshot.data()!),
-            toFirestore: (taskModel, option) => taskModel.toJson(),
+            toFirestore: (authModel, option) => authModel.toJson(),
           );
 
   static Future<void> addUserToFirebase(AuthModel authModel) async {
