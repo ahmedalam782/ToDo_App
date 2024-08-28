@@ -117,7 +117,7 @@ class _EditTaskState extends State<EditTask> {
                         keyboardType: TextInputType.text,
                         hintText: AppLocalizations.of(context)!.taskTitle,
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (value!.trim().isEmpty) {
                             return AppLocalizations.of(context)!.taskTitleError;
                           } else {
                             return null;
@@ -133,7 +133,7 @@ class _EditTaskState extends State<EditTask> {
                         hintText: AppLocalizations.of(context)!.taskDescription,
                         maxLines: 3,
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (value!.trim().isEmpty) {
                             return AppLocalizations.of(context)!
                                 .taskDescriptionError;
                           } else {

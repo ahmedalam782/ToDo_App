@@ -85,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: nameTextEditingController,
                 labelText: AppLocalizations.of(context)!.name,
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value!.trim().isEmpty) {
                     return AppLocalizations.of(context)!.nameError;
                   }
                   return null;

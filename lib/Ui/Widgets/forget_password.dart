@@ -56,7 +56,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 keyboardType: TextInputType.text,
                 labelText: AppLocalizations.of(context)!.email,
                 validator: (value) => ValidatedLoginFunction.validateEmail(
-                  value,
+                  value!.trim(),
                   AppLocalizations.of(context)!.emailError,
                 ),
               ),

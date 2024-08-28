@@ -71,7 +71,7 @@ class _AddTasksState extends State<AddTasks> {
                   keyboardType: TextInputType.text,
                   hintText: AppLocalizations.of(context)!.taskTitle,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (value!.trim().isEmpty) {
                       return AppLocalizations.of(context)!.taskTitleError;
                     } else {
                       return null;
@@ -87,7 +87,7 @@ class _AddTasksState extends State<AddTasks> {
                   hintText: AppLocalizations.of(context)!.taskDescription,
                   maxLines: 3,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (value!.trim().isEmpty) {
                       return AppLocalizations.of(context)!.taskDescriptionError;
                     } else {
                       return null;
