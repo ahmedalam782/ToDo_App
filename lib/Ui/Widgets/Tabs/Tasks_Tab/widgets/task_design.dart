@@ -28,6 +28,7 @@ class _TaskDesignState extends State<TaskDesign> {
       child: Slidable(
         startActionPane: ActionPane(
           motion: const ScrollMotion(),
+          extentRatio: 0.6,
           children: [
             SlidableAction(
               onPressed: (_) {
