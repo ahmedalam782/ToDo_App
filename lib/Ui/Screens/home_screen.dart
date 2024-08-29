@@ -14,16 +14,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   int currentIndex = 0;
   List<Widget> tabs = [
     const TasksTab(),
     const SettingsTab(),
   ];
+  bool isSheetOpen = false;
 
   @override
   Widget build(BuildContext context) {
+    bool isKeyboardOpened = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       bottomNavigationBar: BottomAppBar(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         notchMargin: 8,
@@ -52,21 +54,50 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showModalBottomSheet(
-          context: context,
-          useSafeArea: true,
-          isScrollControlled: true,
-          builder: (buildContext) => const AddTasks(),
-        ),
-        child: const Icon(
-          Icons.add,
+      floatingActionButton: isKeyboardOpened
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                if (!isSheetOpen) {
+                  showBottomSheet();
+                  isSheetOpen = true;
+                } else {
+                  isSheetOpen = false;
+                  Navigator.pop(context);
+                }
+                setState(() {});
+              },
+              // onPressed: () => showModalBottomSheet(
+              //   context: context,
+              //   useSafeArea: true,
+              //   isScrollControlled: true,
+              //   builder: (buildContext) => const AddTasks(),
+              // ),
+              child: Icon(
+                isSheetOpen ? Icons.check_outlined : Icons.add,
+                size: 35,
+              ),
+            ),
+      body: Scaffold(
+        key: scaffoldKey,
+        body: IndexedStack(
+          index: currentIndex,
+          children: tabs,
         ),
       ),
-      body: IndexedStack(
-        index: currentIndex,
-        children: tabs,
+    );
+  }
+
+  void showBottomSheet() {
+    scaffoldKey.currentState!.showBottomSheet(
+      (_) => AddTasks(
+        onCancel: () {
+          setState(() {
+            isSheetOpen = false;
+          });
+        },
       ),
+      enableDrag: false,
     );
   }
 }

@@ -10,7 +10,9 @@ import '../../../Screens/authentication_provider.dart';
 import '../Tasks_Tab/tasks_provider.dart';
 
 class AddTasks extends StatefulWidget {
-  const AddTasks({super.key});
+  const AddTasks({super.key, required this.onCancel});
+
+  final void Function() onCancel;
 
   @override
   State<AddTasks> createState() => _AddTasksState();
@@ -40,14 +42,16 @@ class _AddTasksState extends State<AddTasks> {
       "dd-MM-yyyy",
       AppLocalizations.of(context)!.locale,
     );
-    return Container(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.sizeOf(context).width * .12,
-          vertical: MediaQuery.sizeOf(context).height * .04,
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.sizeOf(context).width * .12,
+            vertical: MediaQuery.sizeOf(context).height * .04,
+          ),
           child: Form(
             key: formKey,
             child: Column(
@@ -135,30 +139,32 @@ class _AddTasksState extends State<AddTasks> {
                       )
                     : Center(
                         child: DefaultBtn(
-                            title: AppLocalizations.of(context)!.submit,
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                tasksProvider.addTasks(
-                                  TaskModel(
-                                    title: titleEditingController.text,
-                                    date: selectedDate,
-                                    description:
-                                        descriptionEditingController.text,
-                                  ),
-                                  AppLocalizations.of(context)!.taskAdded,
-                                  Provider.of<AuthenticationProvider>(context,
-                                          listen: false)
-                                      .currentUser!
-                                      .id,
-                                );
-                                Navigator.pop(context);
-                                titleEditingController.clear();
-                                descriptionEditingController.clear();
-                              }
-                            }),
+                          title: AppLocalizations.of(context)!.submit,
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              tasksProvider.addTasks(
+                                TaskModel(
+                                  title: titleEditingController.text,
+                                  date: selectedDate,
+                                  description:
+                                      descriptionEditingController.text,
+                                ),
+                                AppLocalizations.of(context)!.taskAdded,
+                                Provider.of<AuthenticationProvider>(context,
+                                        listen: false)
+                                    .currentUser!
+                                    .id,
+                              );
+                              Navigator.pop(context);
+                              titleEditingController.clear();
+                              descriptionEditingController.clear();
+                            }
+                            widget.onCancel();
+                          },
+                        ),
                       ),
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height * .038,

@@ -20,6 +20,8 @@ class AppTheme {
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: white,
+      elevation: 0,
+      surfaceTintColor: Colors.white,
     ),
     primaryColor: blue,
     secondaryHeaderColor: white,
@@ -92,6 +94,7 @@ class AppTheme {
     ),
   );
   static ThemeData darkTheme = ThemeData(
+    useMaterial3: true,
     dividerTheme: const DividerThemeData(
       color: blue,
       thickness: 2,
@@ -100,6 +103,8 @@ class AppTheme {
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: black,
+      elevation: 0,
+      surfaceTintColor: Colors.white,
     ),
     primaryColorLight: white,
     primaryColor: blue,
@@ -133,7 +138,7 @@ class AppTheme {
       foregroundColor: white,
       shape: CircleBorder(
         side: BorderSide(
-          color: darkPrimary,
+          color: black,
           width: 4,
         ),
       ),
