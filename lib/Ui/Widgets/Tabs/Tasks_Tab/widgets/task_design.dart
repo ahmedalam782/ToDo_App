@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_route/Models/tasks_model.dart';
@@ -42,7 +43,7 @@ class _TaskDesignState extends State<TaskDesign> {
               backgroundColor: AppTheme.red,
               foregroundColor: AppTheme.white,
               icon: Icons.delete,
-              label: 'Delete',
+              label: AppLocalizations.of(context)!.delete,
               borderRadius: BorderRadius.circular(15),
             ),
             SlidableAction(
@@ -54,7 +55,7 @@ class _TaskDesignState extends State<TaskDesign> {
               backgroundColor: AppTheme.blue,
               foregroundColor: Colors.white,
               icon: Icons.edit,
-              label: 'Edit',
+              label: AppLocalizations.of(context)!.edit,
             ),
           ],
         ),

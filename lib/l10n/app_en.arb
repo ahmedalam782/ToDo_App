@@ -43,5 +43,7 @@
   "resetPasswordMsg": "A password reset email has been sent.",
   "emailNotActivated": "The email has not been activated and a new email has been sent for activation.",
   "checkInbox": "Check your inbox",
-  "activationEmail": "Click on the link from the activation email we sent to"
+  "activationEmail": "Click on the link from the activation email we sent to",
+  "edit": "Edit",
+  "delete": "Delete"
 }
