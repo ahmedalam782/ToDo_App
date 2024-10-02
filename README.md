@@ -24,7 +24,6 @@ This is a simple To Do application built using Flutter, designed to help users m
 <img width="40%" src="https://github.com/user-attachments/assets/00c36504-656f-4162-b234-3ed02bf563a3"/>
 <img width="40%" src="https://github.com/user-attachments/assets/8452fd10-2830-48e5-a815-65ad3aaa14f1"/>
 <img width="40%" src="https://github.com/user-attachments/assets/63fbb73f-d21a-41e0-a70d-dc0284ef7471"/>
-<img width="40%" src="https://github.com/user-attachments/assets/7fae3c05-ad62-4f00-8ba0-6dfeaeb9294f"/>
 
 # Features
 
