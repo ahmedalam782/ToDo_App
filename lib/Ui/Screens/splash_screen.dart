@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_app_route/Ui/Screens/login_screen.dart';
 
-import '../Widgets/Tabs/Settings_Tab/setting_provider.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -34,12 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SettingProvider settingProvider = Provider.of<SettingProvider>(context);
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage(settingProvider.splashImage),
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          "assets/images/bg_splash.png",
+          width: double.infinity,
         ),
       ),
     );
