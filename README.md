@@ -4,6 +4,8 @@
 
 This is a simple To Do application built using Flutter, designed to help users manage their tasks effectively. The app uses Firebase for user authentication and Firestore as the database to store tasks.
 
+<img width="60%" src="https://github.com/user-attachments/assets/5293d8c5-3ca2-4e1d-873f-efba582edfc1"/>
+
 <img width="40%" src="https://github.com/user-attachments/assets/14f54d6f-6df0-44d6-9d2c-900a6ecad4b8"/>
 <img width="40%" src="https://github.com/user-attachments/assets/554cdd12-3cb7-4de2-97ba-e988235e37ac"/>
 <img width="40%" src="https://github.com/user-attachments/assets/bedd6ce3-9a4d-4bd6-8b6d-ffdb477cc9a4"/>
